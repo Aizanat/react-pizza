@@ -1,10 +1,32 @@
 import React from 'react'
-import { SearchContext } from '../../App'
+import debounce from 'lodash.debounce'
 
 import styles from './Search.module.scss'
+import { useDispatch } from 'react-redux'
+import { setSearchValue } from '../../redux/slices/filterSlice'
 
 const Search = () => {
-  const { searchValue, setSearchValue } = React.useContext(SearchContext)
+  const dispatch = useDispatch()
+  const [value, setValue] = React.useState('')
+  const inputRef = React.useRef()
+
+  const onClickClear = () => {
+    dispatch(setSearchValue(''))
+    setValue('')
+    inputRef.current.focus()
+  }
+
+  const updateSearchValue = React.useCallback(
+    debounce((str) => {
+      dispatch(setSearchValue(str))
+    }, 350),
+    []
+  )
+
+  const onChangeInput = (event) => {
+    setValue(event.target.value)
+    updateSearchValue(event.target.value)
+  }
 
   return (
     <div className={styles.root}>
@@ -19,14 +41,15 @@ const Search = () => {
         </g>
       </svg>
       <input
-        value={searchValue}
-        onChange={(event) => setSearchValue(event.target.value)}
+        ref={inputRef}
+        value={value}
+        onChange={onChangeInput}
         className={styles.input}
         placeholder="Поиск пиццы..."
       />
-      {searchValue && (
+      {value && (
         <svg
-          onClick={() => setSearchValue('')}
+          onClick={onClickClear}
           className={styles.clearIcon}
           data-name="Layer 1"
           id="Layer_1"
