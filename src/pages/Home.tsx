@@ -8,13 +8,13 @@ import Skeleton from '../components/PizzaBlock/Skeleton'
 import { selectFilter, setCategoryId } from '../redux/slices/filterSlice'
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
 
-const Home = () => {
+const Home: React.FC = () => {
   const dispatch = useDispatch()
   const { items, status } = useSelector(selectPizzaData)
   const { categoryId, sort, searchValue } = useSelector(selectFilter)
 
-  const onChangeCategory = (id) => {
-    dispatch(setCategoryId(id))
+  const onChangeCategory = (idx: number) => {
+    dispatch(setCategoryId(idx))
   }
 
   const getPizzas = async () => {
@@ -24,6 +24,7 @@ const Home = () => {
     const search = searchValue ? `&search=${searchValue}` : ''
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         order,
         sortBy,
@@ -42,7 +43,7 @@ const Home = () => {
   const skeletons = [...new Array(10)].map((_, index) => (
     <Skeleton key={index} />
   ))
-  const pizzas = items.map((obj) => <PizzaBlock key={obj.id} {...obj} />)
+  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />)
 
   return (
     <div className="container">
