@@ -14,9 +14,9 @@ const Home: React.FC = () => {
   const { items, status } = useSelector(selectPizzaData)
   const { categoryId, sort, searchValue } = useSelector(selectFilter)
 
-  const onChangeCategory = (idx: number) => {
+  const onChangeCategory = React.useCallback((idx: number) => {
     dispatch(setCategoryId(idx))
-  }
+  }, [])
 
   const getPizzas = async () => {
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
