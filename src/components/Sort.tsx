@@ -1,13 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectSort, setSort } from '../redux/slices/filterSlice'
+import { selectSort, setSort, TSort } from '../redux/slices/filterSlice'
 
-type SortItem = {
-  name: string
-  sortProperty: string
-}
-
-const sortList: SortItem[] = [
+const sortList: TSort[] = [
   { name: 'популярности (DESC)', sortProperty: 'rating' },
   { name: 'популярности (ASC)', sortProperty: '-rating' },
   { name: 'цене (DESC)', sortProperty: 'price' },
@@ -22,7 +17,7 @@ const Sort: React.FC = () => {
 
   const [open, setOpen] = React.useState(false)
 
-  const onClickListItem = (obj: SortItem) => {
+  const onClickListItem = (obj: TSort) => {
     dispatch(setSort(obj))
     setOpen(false)
   }

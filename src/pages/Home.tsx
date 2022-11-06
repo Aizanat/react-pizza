@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import Categories from '../components/Categories'
 import Sort from '../components/Sort'
@@ -7,9 +7,10 @@ import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
 import { selectFilter, setCategoryId } from '../redux/slices/filterSlice'
 import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice'
+import { useAppDispatch } from '../redux/store'
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
   const { items, status } = useSelector(selectPizzaData)
   const { categoryId, sort, searchValue } = useSelector(selectFilter)
 
@@ -24,7 +25,6 @@ const Home: React.FC = () => {
     const search = searchValue ? `&search=${searchValue}` : ''
 
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         order,
         sortBy,
